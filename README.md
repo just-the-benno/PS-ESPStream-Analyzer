@@ -18,13 +18,31 @@ y.y.y.y     b.b.b.b         0x1709869           0    11    
 b.b.b.b     y.y.y.y         0xD090CD31          0    30                  0
 ```   
 
-## Prerequest
+## Prerequisite
 
-This scripts runs everywhere where Wireshark and Powershell can be executed.
+This scripts runs everywhere where Wireshark and Powershell can be executed. This scripts uses the command line tool (tshark) which is part of the installation of wireshark. 
 
 ## ESP Streams
 
+Encapsulating Security Payload (ESP) is one protocal that is used to encapsulate data that is sent over an IPSec tunnel. IPSec tunnel are frequently used for VPN either site-to-site or remote access. The data within an ESP packet is encrypted. However, to do the packet loss analyses, this tool relies on the sequence number and service identifier, which are part of ESP packet header. The payload is never inspected. 
+
+Each stream is identified by a unique Security Parameters Index (SPI). This is the anchor for the analyses. The output will have an item for each found SPI. 
+
 ## The analyzing capabilities
+
+This scripts watches only packet loss. Each packet within an ESP stream has a sequence number. This number is increased for each packet. If the scripts detects, that there is a gap, it is considered as packet loss. The amount of lost packets is the difference between the expected and the actual received sequence number
+
+Assume, the stream consits of theses sequence numbers
+
+``
+511
+512
+513
+515
+520
+``
+
+There is a gap between ``513`` and ``515``. One packet is lost. Another gap is between ``515`` and ``520``. Here are 4 packets lost. The total loss are 5 packets. There have been 10 packets in total sent. So, this stream would have a loss ratio of 50%. 
 
 ## How to use it
 
