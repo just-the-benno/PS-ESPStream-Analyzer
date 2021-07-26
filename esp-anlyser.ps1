@@ -1,5 +1,46 @@
 
 function Test-ESPStream {
+    <#
+    .SYNOPSIS
+        Analyse ESP Stream within multiple .pcap file to check for packet loss.
+
+    .DESCRIPTION
+        .
+
+    .PARAMETER TsharkPath
+        The path the the tshark executable. Points to the default installation on Windows 
+
+    .PARAMETER Input
+        The location of the directory where all files .pcap files should be analyzed.
+
+    .PARAMETER ErspanId
+        If packets are captured using ERSPAN and the analysing should only contain a certain id
+        If this parameter is not set, no filtering based on ERSPAN is done  
+
+    .PARAMETER PrintOutputResult
+        If true the summery is written into the console window.
+
+    .OUTPUTS
+        Outputs an array where each item is a summery of the ESP stream. Items contain the following properties:
+        Spi,SpiAsHex, PacketLoss, Total, Percentage, Source, Destination, 
+
+    .EXAMPLE
+        Test-ESPStream 
+
+        Analyze the .pcap files in the current directory and output the summery into the console
+
+        Test-ESPStream  -Input C:/PacketSniffing/Session1 -PrintOutputResult $false | Format-Table -Property Source, Destination, SpiAsHex, Total
+
+        Analyze the .pcap files in the directory C:/PacketSniffing/Session1. The result are printed as a table, where each row has the properties Source,Destination,SpiAsHex and Total
+
+        Test-ESPStream -ErspanId 4
+
+         Analyze the .pcap files in the current directory. Only ESP stream that are captured by ERSPAN with an Id of 4 are analyzed and part of the result set
+
+    .LINK
+        https://github.com/just-the-benno/PS-ESPStream-Analyzer/
+
+    #>
     param (
         [Parameter(Mandatory = $false)][string]$TsharkPath = "C:\Program Files\Wireshark\tshark.exe",
         [Parameter(Mandatory = $false)][string]$Input = ".\",
