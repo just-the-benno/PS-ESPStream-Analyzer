@@ -95,7 +95,7 @@ function Test-ESPStream {
             $spiEntry = $spis[$castedSpi];
 
             if ($sequenceNumber -ne $spiEntry.ExpectedSequnce) {
-                $amountOfLostPackets = ($sequenceNumber - $spiEntry.ExpectedSequnce);
+                $amountOfLostPackets = ($sequenceNumber - $spiEntry.ExpectedSequnce) - 1;
                 $spiEntry.PacketLoss += $amountOfLostPackets;
                 $spiEntry.Total += $amountOfLostPackets;
                 # Write-Host "Packet loss detected: SPI: $($spiEntry.SpiAsHex) has lost $amountOfLostPackets packets" -ForegroundColor DarkRed
